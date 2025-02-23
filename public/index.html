@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Japa App</title>
+</head>
+<body>
+    <div class="app-container">
+        <audio id="audio-player" controls>
+            Your browser does not support the audio element.
+        </audio>
+        <div class="buttons">
+            <button id="play-pause-btn">Play</button>
+        </div>
+        <form id="upload-form">
+            <input type="text" name="speaker" placeholder="Speaker Name" required>
+            <input type="file" name="clip" accept="audio/*" required>
+            <button type="submit">Upload Clip</button>
+        </form>
+        <div id="speakers"></div>
+        <script src="script.js"></script>
+    </div>
+</body>
+</html>
