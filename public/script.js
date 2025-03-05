@@ -59,7 +59,7 @@ function playRandomClip() {
 function pauseAudio() {
     audioPlayer.pause();
     isPlaying = false;
-    playPauseBtn.textContent = 'Play';
+    playPauseBtn.textContent = 'Resume Chanting';
 }
 
 function togglePlayPause() {
