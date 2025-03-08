@@ -7,6 +7,24 @@ let isPlaying = false;
 let interval;
 let clips = [];
 
+let wakeLock = null;
+
+async function requestWakeLock() {
+    try {
+        wakeLock = await navigator.wakeLock.request('screen');
+        wakeLock.addEventListener('release', () => {
+            console.log('Wake Lock was released');
+        });
+        console.log('Wake Lock is active');
+    } catch (err) {
+        console.error(`${err.name}, ${err.message}`);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    requestWakeLock();
+});
+
 async function fetchSpeakers() {
     const response = await fetch('/speakers');
     const speakers = await response.json();
