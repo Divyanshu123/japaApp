@@ -78,3 +78,82 @@ input[type="checkbox"] {
     margin-right: 8px;
 }
 
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    position: relative;
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+    text-align: left;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #000;
+}
+
+/* Dropdown */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.dropdown-content div {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-content div:hover {
+    background-color: #f1f1f1;
+}
+
+/* Add this to your style.css */
+.loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 8px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 8px solid #3498db;
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+    z-index: 1000;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.modal.disabled {
+    pointer-events: none;
+    opacity: 0.99;
+}
+
