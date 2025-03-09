@@ -1,11 +1,30 @@
 const audioPlayer = document.getElementById('audio-player');
 const playPauseBtn = document.getElementById('play-pause-btn');
-const uploadForm = document.getElementById('upload-form');
 const speakersDiv = document.getElementById('speakers');
+const openFormBtn = document.getElementById('open-form-btn');
+const audioForm = document.getElementById('audio-form');
+const formModal = document.getElementById('form-modal');
+const closeModal = document.querySelector('.close');
+const generateButton = audioForm.querySelector('button[type="submit"]');
+
 
 let isPlaying = false;
 let interval;
 let clips = [];
+
+openFormBtn.addEventListener('click', () => {
+    formModal.style.display = 'block';
+});
+
+closeModal.addEventListener('click', () => {
+    formModal.style.display = 'none';
+});
+
+window.addEventListener('click', (event) => {
+    if (event.target == formModal) {
+        formModal.style.display = 'none';
+    }
+});
 
 let wakeLock = null;
 
@@ -29,7 +48,6 @@ async function fetchSpeakers() {
     const response = await fetch('/speakers');
     const speakers = await response.json();
     speakersDiv.innerHTML = ''; // Clear previous content
-    
     for (const speaker of speakers) {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
@@ -97,35 +115,33 @@ function setRandomClipInterval() {
     const randomInterval = Math.floor(Math.random() * 15 + 1) * 60000;
     interval = setInterval(playRandomClip, randomInterval);
 }
-
-uploadForm.addEventListener('submit', async (event) => {
+audioForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    
-    const formData = new FormData(uploadForm);
 
-    const response = await fetch('/upload', {
+    const audioLength = document.getElementById('audio-length').value;
+    const clipInterval = document.getElementById('clip-interval').value;
+    const loader = document.getElementById('loader');
+    loader.style.display = 'block';
+    formModal.classList.add('disabled');
+    fetch('/generate_audio', {
         method: 'POST',
-        body: formData
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ audioLength, clipInterval, clips })
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const url = URL.createObjectURL(blob);
+        audioPlayer.src = url;
+        formModal.style.display = 'none';
+    })
+    .catch(error => console.error('Error:', error))
+    .finally(() => {
+        // Hide the loader
+        loader.style.display = 'none';
+        formModal.classList.remove('disabled');
     });
-
-    if (response.ok) {
-        alert('Clip uploaded successfully!'); // Optional feedback
-        uploadForm.reset(); // Clears the form
-        fetchSpeakers(); // Refresh speakers list
-    } else {
-        alert('Upload failed. Please try again.');
-    }
 });
-
-async function checkAdmin() {
-    const response = await fetch('/is-admin'); // API to check admin status
-    const data = await response.json();
-
-    if (!data.isAdmin) {
-        document.getElementById('upload-form').style.display = 'none'; // Hide upload form
-    }
-}
-
-checkAdmin();
 
 fetchSpeakers();
