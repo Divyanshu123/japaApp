@@ -123,7 +123,7 @@ app.post('/generate_audio', (req, res) => {
         }
 
         // ✅ Generate the final audio
-        const outputPath = path.join(__dirname, 'output', `generated_audio_${Date.now()}.mp3`);
+        const outputPath = path.join(__dirname, `generated_audio_${Date.now()}.mp3`);
         const command = `
             ffmpeg -f concat -safe 0 -i ${fileListPath} -c copy ${outputPath}
         `;
